@@ -6,10 +6,15 @@
 }
 
 #app {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
+    padding: 30px;
     background-color: #221F1F;
     color: #fff;
+}
+
+li {
+    margin-left: 15px;
 }
 
 .btn {
@@ -21,6 +26,7 @@
     width: 200px;
 }
 
-.search {
-    padding: 30px;
+.result {
+    padding-top: 10px;
 }
+

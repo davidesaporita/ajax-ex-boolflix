@@ -14,20 +14,20 @@
 <body>
     <div id="app">
         <div class="search">
-            <input id="search-input" type="text" class="input" placeholder="Cerca un film" value="batman">
+            <input id="search-input" type="text" class="input" placeholder="Cerca un film">
             <button id="search-button" class="btn">Cerca</button>
         </div>
         <div class="result-list"></div>
     </div>
 
     <!-- Handlebars Templates -->
-    <script id="template" type="text/x-handlebars-template">
+    <script id="result-template" type="text/x-handlebars-template">
         <div class="result">
             <ul class="data">
-                <li class="title">{{ title }}</li>
-                <li class="original-title">{{ originalTitle }}</li>
-                <li class="original-language">{{ originalLanguage }}</li>
-                <li class="vote-average">{{ voteAverage }}</li>
+                <li class="title">Titolo: {{ title }}</li>
+                <li class="original-title">Titolo originale: {{ originalTitle }}</li>
+                <li class="original-language">Lingua originale: {{ originalLanguage }}</li>
+                <li class="vote-average">Voto medio: {{ voteAverage }}</li>
             </ul>
         </div>
     </script>

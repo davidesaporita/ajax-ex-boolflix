@@ -15,6 +15,10 @@ $(document).ready(function() {
     var searchBtn = $('#search-button');
     var list = $('.result-list');
 
+    // Init Handlebars
+    var source = $('#result-template').html();
+    var template = Handlebars.compile(source);
+
     searchBtn.click(function() {
         var query = searchInput.val();
         $.ajax({
@@ -25,12 +29,16 @@ $(document).ready(function() {
                 language: language,
                 query: query
             },
-            success: function(data){
+            success: function(data) {
+                list.html('');
                 data.results.forEach(element => {
-                    console.log(element.title);
-                    console.log(element.original_title);
-                    console.log(element.original_language);
-                    console.log(element.vote_average);    
+                    var templateData = {
+                        title: element.title,
+                        originalTitle: element.original_title,
+                        originalLanguage: element.original_language,
+                        voteAverage: element.vote_average
+                    }
+                    list.append(template(templateData));
                 });
             },
             error: function() {
