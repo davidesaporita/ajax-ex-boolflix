@@ -24,10 +24,27 @@
     <script id="result-template" type="text/x-handlebars-template">
         <div class="result">
             <ul class="data">
-                <li class="title">Titolo: {{ title }}</li>
-                <li class="original-title">Titolo originale: {{ originalTitle }}</li>
-                <li class="original-language">Lingua originale: {{ originalLanguage }}</li>
-                <li class="vote-average">Voto medio: {{ voteAverage }}</li>
+                <li class="title">
+                    <span class="label">Titolo:</span>
+                    <span class="content">{{ title }}</span>
+                </li>
+                <li class="original-title">
+                    <span class="label">Titolo originale:</span>
+                    <span class="content">{{ originalTitle }}</span>
+                </li>
+                <li class="original-language">
+                    <span class="label">Lingua originale:</span>
+                    <span class="content">{{ originalLanguage }}</span>
+                </li>
+                <li class="vote-average">
+                    <span class="label">Voto medio:</span>
+                    <span class="content">{{ voteAverage }}</span>
+                    <span class="content">{{{ stars }}}</span>
+                </li>
+                <!-- <li class="type">
+                    <span class="label">Tipo:</span>
+                    <span class="content">{{ type }}</span>
+                </li> -->
             </ul>
         </div>
     </script>
