@@ -14,7 +14,7 @@
  */
 
 $(document).ready(function() {
-   
+    
     // Refs
     var searchInput = $('#search-input');
     var searchBtn = $('#search-button');
@@ -42,24 +42,30 @@ function searchValidation(query, template) {
     (query.length > 2) ? search(query, template) : alert('Digita almeno 3 caratteri');
 }
 
-// Search function: 
+/* ------------------------------------------------------------------ *
+ * SEARCH function                                                    
+ * - Execute two api calls via Ajax looking for received query
+ * - API urls are collected in apiUrls array, for a better management 
+ *   and the possibility to add more url without changing search()
+ *   function but just adapting print() function
+ * ------------------------------------------------------------------ */ 
 function search(query, template) {
-
-    // Vars
+    
+    // Refs
+    var searchInput = $('#search-input');
+    var list = $('.result-list');
+    
+    // API Vars
     var language = 'it-IT';
     var apiKey = '2c7968616e24faf12903bba4628706b2';
-    var apiUrlArray = [ 
+    var apiUrls = [ 
         { type: 'movie', url: 'https://api.themoviedb.org/3/search/movie' },
         { type: 'tv',    url: 'https://api.themoviedb.org/3/search/tv' }
     ];
 
-    // Refs
-    var searchInput = $('#search-input');
-    var list = $('.result-list');
-
     cleanResults(list);
 
-    apiUrlArray.forEach(element => {
+    apiUrls.forEach(element => {
         $.ajax({
             url: element.url, 
             method: 'GET',
@@ -83,16 +89,17 @@ function search(query, template) {
     });
 }
 
+/* ------------------------------------------------------------------ *
+ * HOWMANYSTARS function
+ * 1) Prepare HTML stars (Fontawesome needed) and html empty string
+ * 2) Transform average vote from 0 to 5 anda round up result
+ * 3) Apply as full stars as number of rounded vote
+ * ------------------------------------------------------------------ */ 
 function howManyStars(vote) {
-    // Vars
     var starFull = '<i class="fas fa-star"></i>';
     var starEmpty = '<i class="far fa-star"></i>';
     var html = '';
-
-    // Modifica scala di valori e arrotonamento per eccesso
     var starsVote = Math.ceil(vote*0.5);
-
-    // Ciclo per generare html
     for(var i = 0; i < 5; i++) {
         if(starsVote > i) html += starFull;
         else              html += starEmpty;
@@ -101,6 +108,13 @@ function howManyStars(vote) {
     return html;
 }
 
+/* ------------------------------------------------------------------ *
+ * PRINT function
+ * 1) Read array with results
+ * 2) Build object for Handlebars template, 
+ *    checking right property names if is called movie API or tv API
+ * 3) Append template at the end of container
+ * ------------------------------------------------------------------ */ 
 function print(type, data, template) {
     data.forEach(element => {
         var templateData = {
@@ -117,10 +131,12 @@ function print(type, data, template) {
     });
 }
 
+// Clean container
 function cleanResults(ref) {
     ref.html('');
 }
 
+// Apply the right flag (Italian or English) or return native language code (es 'fr' for French)
 function applyFlag(language) {
     if(language === 'it' || language === 'en') {
         return '<img class="flag" src="'+ 'assets/img/' + language + '.svg' + '" alt="' + language + '">';
@@ -129,6 +145,7 @@ function applyFlag(language) {
     }
 }
 
+// Called when there are no results
 function noResults(type) {
     $('.result-list').append('<br>Nessun risultato trovato nella categoria ' + type);
     $('#search-input').select();
