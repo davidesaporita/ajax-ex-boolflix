@@ -14,7 +14,7 @@
 <body>
     <div id="app">
         <div class="search">
-            <input id="search-input" type="text" class="input" placeholder="Cerca un film">
+            <input id="search-input" type="text" class="input" placeholder="Cerca un film" value="ritorno">
             <button id="search-button" class="btn">Cerca</button>
         </div>
         <div class="result-list"></div>
@@ -34,12 +34,13 @@
                 </li>
                 <li class="original-language">
                     <span class="label">Lingua originale:</span>
-                    <span class="content">{{ originalLanguage }}</span>
+                    <span class="content">{{{ flag }}}</span>
+                    <span class="content">({{ originalLanguage }})</span>
                 </li>
                 <li class="vote-average">
                     <span class="label">Voto medio:</span>
-                    <span class="content">{{ voteAverage }}</span>
                     <span class="content">{{{ stars }}}</span>
+                    <span class="content">({{ voteAverage }}/10)</span>
                 </li>
                 <!-- <li class="type">
                     <span class="label">Tipo:</span>

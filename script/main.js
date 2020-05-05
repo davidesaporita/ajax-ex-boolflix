@@ -62,6 +62,7 @@ function apiCall(query, template) {
                         title:            element.title,
                         originalTitle:    element.original_title,
                         originalLanguage: element.original_language,
+                        flag:             applyFlag(element.original_language),
                         voteAverage:      element.vote_average,
                         stars:            howManyStars(element.vote_average)
                     }
@@ -96,4 +97,15 @@ function howManyStars(vote) {
     }
 
     return html;
+}
+
+function applyFlag(language) {
+    if(language === 'it' || language === 'en') {
+        var folder = 'assets/img/';
+        var ext = '.svg';
+        var html = '<img class="flag" src="'+ folder + language + ext + '" alt="' + language + '">';
+        return html;
+    } else {
+        return language;
+    }
 }
