@@ -18,7 +18,9 @@ $(document).ready(function() {
     searchBtn.click(function() {
         var query = searchInput.val();
         if(query.length > 2) {
-            apiCall(query, template);
+            search(query, template);
+        } else {
+            alert('Digita almeno 3 caratteri');
         }
     });
 
@@ -26,7 +28,9 @@ $(document).ready(function() {
         if(e.which === 13 || e.keyCode === 13) {
             var query = searchInput.val();
             if(query.length > 2) {
-                apiCall(query, template);
+                search(query, template);
+            } else {
+                alert('Digita almeno 3 caratteri');
             }
         }
     });
@@ -37,47 +41,50 @@ $(document).ready(function() {
    | Functions |
    ------------   */
 
-function apiCall(query, template) {
+function search(query, template) {
+
     // Vars
-    var apiUrl = 'https://api.themoviedb.org/3/search/movie';
+    var apiUrlBase = 'https://api.themoviedb.org/3/search/';
+    var apiUrlArray = [ 
+        {
+            type: 'movie',
+            url: apiUrlBase + 'movie'
+        },
+        {
+            type: 'tv',
+            url: apiUrlBase + 'tv'
+        }
+    ];
     var apiKey = '2c7968616e24faf12903bba4628706b2';
     var language = 'it-IT';
 
     // Refs
+    var searchInput = $('#search-input');
     var list = $('.result-list');
 
-    $.ajax({
-        url: apiUrl, 
-        method: 'GET',
-        data: {
-            api_key: apiKey,
-            language: language,
-            query: query
-        },
-        success: function(data) {
-            list.html('');
-            if(data.results.length > 0){
-                data.results.forEach(element => {
-                    var templateData = {
-                        title:            element.title,
-                        originalTitle:    element.original_title,
-                        originalLanguage: element.original_language,
-                        flag:             applyFlag(element.original_language),
-                        voteAverage:      element.vote_average,
-                        stars:            howManyStars(element.vote_average)
-                    }
+    cleanResults(list);
 
-                    list.append(template(templateData));
-                });
-            } else {
-                alert('Nessun film trovato');
-                //searchInput.select();
+    apiUrlArray.forEach(element => {
+        $.ajax({
+            url: element.url, 
+            method: 'GET',
+            data: {
+                api_key: apiKey,
+                language: language,
+                query: query
+            }, 
+            success: function(data) {                
+                if(data.results.length > 0) {
+                    print(element.type, data.results, template);
+                } else {
+                    noResults(element.type);
+                }
+            },
+            error: function() {
+                alert('Qualcosa non funziona');
+                searchInput.focus();
             }
-        },
-        error: function() {
-            console.log('Qualcosa non funziona');
-            //searchInput.focus();
-        }
+        });
     });
 }
 
@@ -99,6 +106,30 @@ function howManyStars(vote) {
     return html;
 }
 
+function print(type, data, template) {
+    
+    // Refs
+    var list = $('.result-list');
+
+    data.forEach(element => {
+        var templateData = {
+            title:            type === 'movie' ? element.title : element.name,
+            originalTitle:    type === 'movie' ? element.original_title : element.original_name,
+            originalLanguage: element.original_language,
+            flag:             applyFlag(element.original_language),
+            voteAverage:      element.vote_average,
+            stars:            howManyStars(element.vote_average),
+            type:             type
+        }
+        
+        list.append(template(templateData));
+    });
+}
+
+function cleanResults(ref) {
+    ref.html('');
+}
+
 function applyFlag(language) {
     if(language === 'it' || language === 'en') {
         var folder = 'assets/img/';
@@ -108,4 +139,13 @@ function applyFlag(language) {
     } else {
         return language;
     }
+}
+
+function noResults(type) {
+    // Refs
+    var list = $('.result-list');
+    var searchInput = $('#search-input');
+
+    list.append('<br>Nessun risultato trovato nella categoria ' + type);
+    searchInput.select();
 }
