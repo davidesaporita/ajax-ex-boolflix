@@ -1,7 +1,16 @@
-/**
+/*
  * 
- * BOOLFLIX / Netflix replica
+ *  88                                  88    ad88 88 88              
+ *  88                                  88   d8"   88 ""              
+ *  88                                  88   88    88                 
+ *  88,dPPYba,   ,adPPYba,   ,adPPYba,  88 MM88MMM 88 88 8b,     ,d8  
+ *  88P'    "8a a8"     "8a a8"     "8a 88   88    88 88  `Y8, ,8P'   
+ *  88       d8 8b       d8 8b       d8 88   88    88 88    )888(     
+ *  88b,   ,a8" "8a,   ,a8" "8a,   ,a8" 88   88    88 88  ,d8" "8b,   
+ *  8Y"Ybbd8"'   `"YbbdP"'   `"YbbdP"'  88   88    88 88 8P'     `Y8 
  *  
+ *  A Netflix Replica made in Boolean - Class #12 - By Davide Saporita
+ * 
  */
 
 $(document).ready(function() {
@@ -9,54 +18,40 @@ $(document).ready(function() {
     // Refs
     var searchInput = $('#search-input');
     var searchBtn = $('#search-button');
-    var app = $('#app');
 
     // Init Handlebars
     var source = $('#result-template').html();
     var template = Handlebars.compile(source);
 
-    searchBtn.click(function() {
-        var query = searchInput.val();
-        if(query.length > 2) {
-            search(query, template);
-        } else {
-            alert('Digita almeno 3 caratteri');
-        }
+    // Event on click | button
+    searchBtn.click(() => { 
+        searchValidation(searchInput.val(), template); 
     });
 
-    app.on('keyup','#search-input', (e) => {
+    // Event on keyup | input
+    searchInput.keyup((e) => {
         if(e.which === 13 || e.keyCode === 13) {
-            var query = searchInput.val();
-            if(query.length > 2) {
-                search(query, template);
-            } else {
-                alert('Digita almeno 3 caratteri');
-            }
+            searchValidation(searchInput.val(), template);
         }
     });
     
 }); // End of ready function
 
-/*  ------------
-   | Functions |
-   ------------   */
+// Search validation (at least 3 characters), if it's OK it calls function search()
+function searchValidation(query, template) {
+    (query.length > 2) ? search(query, template) : alert('Digita almeno 3 caratteri');
+}
 
+// Search function: 
 function search(query, template) {
 
     // Vars
-    var apiUrlBase = 'https://api.themoviedb.org/3/search/';
-    var apiUrlArray = [ 
-        {
-            type: 'movie',
-            url: apiUrlBase + 'movie'
-        },
-        {
-            type: 'tv',
-            url: apiUrlBase + 'tv'
-        }
-    ];
-    var apiKey = '2c7968616e24faf12903bba4628706b2';
     var language = 'it-IT';
+    var apiKey = '2c7968616e24faf12903bba4628706b2';
+    var apiUrlArray = [ 
+        { type: 'movie', url: 'https://api.themoviedb.org/3/search/movie' },
+        { type: 'tv',    url: 'https://api.themoviedb.org/3/search/tv' }
+    ];
 
     // Refs
     var searchInput = $('#search-input');
@@ -107,10 +102,6 @@ function howManyStars(vote) {
 }
 
 function print(type, data, template) {
-    
-    // Refs
-    var list = $('.result-list');
-
     data.forEach(element => {
         var templateData = {
             title:            type === 'movie' ? element.title : element.name,
@@ -122,7 +113,7 @@ function print(type, data, template) {
             type:             type
         }
         
-        list.append(template(templateData));
+        $('.result-list').append(template(templateData));
     });
 }
 
@@ -132,20 +123,13 @@ function cleanResults(ref) {
 
 function applyFlag(language) {
     if(language === 'it' || language === 'en') {
-        var folder = 'assets/img/';
-        var ext = '.svg';
-        var html = '<img class="flag" src="'+ folder + language + ext + '" alt="' + language + '">';
-        return html;
+        return '<img class="flag" src="'+ 'assets/img/' + language + '.svg' + '" alt="' + language + '">';
     } else {
         return language;
     }
 }
 
 function noResults(type) {
-    // Refs
-    var list = $('.result-list');
-    var searchInput = $('#search-input');
-
-    list.append('<br>Nessun risultato trovato nella categoria ' + type);
-    searchInput.select();
+    $('.result-list').append('<br>Nessun risultato trovato nella categoria ' + type);
+    $('#search-input').select();
 }
