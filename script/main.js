@@ -125,6 +125,7 @@ function print(type, data, template) {
             originalLanguage: element.original_language,
             voteAverage:      element.vote_average,
             posterUrl:        element.poster_path != null ? (imgUrlBase + element.poster_path) : noPoster,
+            overview:         element.overview.substr(0,256),
             flag:             applyFlag(element.original_language),
             stars:            howManyStars(element.vote_average),
             type:             type

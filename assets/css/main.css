@@ -7,6 +7,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
+ul {
+    list-style: none;
+}
+
 /* Layout */
 
 #app {
@@ -41,6 +45,11 @@
     width: 200px;
 }
 
+i.fas,
+i.far { /* jQuery */
+    color: yellow;
+}
+
 /* Header */
 
 .logo {
@@ -57,15 +66,34 @@
 }
 
 .result {
+    position: relative;
     width: calc(100% / 5);
+    margin-bottom: 20px;
 }
 
-.result .data li {
-    margin-left: 15px;
+.result .poster {
+    position: relative;
+    z-index: 1;
 }
 
-.result {
-    padding-top: 10px;
+.result .data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 342px;
+    height: 513px;
+    padding: 10px 10px 0;
+    background-color: black;
+    opacity: 0;
+    z-index: 2;
+}
+
+.result .data:hover {
+    opacity: 1;
+}
+
+.result .data .label {
+    font-weight: 600;
 }
 
 .flag { /* jQuery */
