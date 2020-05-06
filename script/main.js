@@ -129,7 +129,6 @@ function print(type, data, template) {
             stars:            howManyStars(element.vote_average),
             type:             type
         }
-        console.log(templateData.posterUrl);
         
         $('.result-list').append(template(templateData));
     });

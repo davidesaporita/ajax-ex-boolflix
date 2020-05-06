@@ -1,3 +1,5 @@
+/* Generals */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,7 +7,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
+/* Layout */
+
 #app {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     width: 100%;
     padding: 30px;
@@ -13,9 +19,18 @@
     color: #fff;
 }
 
-li {
-    margin-left: 15px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-basis: 100px;
 }
+
+.main {
+    flex-grow: 1;
+}
+
+/* Utilities */
 
 .btn {
     padding: 4px;
@@ -26,13 +41,34 @@ li {
     width: 200px;
 }
 
+/* Header */
+
+.logo {
+    color: #db0000;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+/* Main */
+
+.result-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.result {
+    width: calc(100% / 5);
+}
+
+.result .data li {
+    margin-left: 15px;
+}
+
 .result {
     padding-top: 10px;
 }
 
-.flag {
+.flag { /* jQuery */
     width: 20px;
     height: auto;
 }
-
-
