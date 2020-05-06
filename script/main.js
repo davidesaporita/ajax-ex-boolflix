@@ -99,7 +99,7 @@ function howManyStars(vote) {
     var starFull = '<i class="fas fa-star"></i>';
     var starEmpty = '<i class="far fa-star"></i>';
     var html = '';
-    var starsVote = Math.ceil(vote*0.5);
+    var starsVote = Math.round(vote*0.5);
     for(var i = 0; i < 5; i++) {
         if(starsVote > i) html += starFull;
         else              html += starEmpty;
@@ -116,16 +116,20 @@ function howManyStars(vote) {
  * 3) Append template at the end of container
  * ------------------------------------------------------------------ */ 
 function print(type, data, template) {
+    var imgUrlBase = 'https://image.tmdb.org/t/p/w342';
+    var noPoster = 'assets/img/noposter.png';
     data.forEach(element => {
         var templateData = {
-            title:            type === 'movie' ? element.title : element.name,
-            originalTitle:    type === 'movie' ? element.original_title : element.original_name,
+            title:            element.title || element.name,
+            originalTitle:    element.original_title || element.original_name,
             originalLanguage: element.original_language,
-            flag:             applyFlag(element.original_language),
             voteAverage:      element.vote_average,
+            posterUrl:        element.poster_path != null ? (imgUrlBase + element.poster_path) : noPoster,
+            flag:             applyFlag(element.original_language),
             stars:            howManyStars(element.vote_average),
             type:             type
         }
+        console.log(templateData.posterUrl);
         
         $('.result-list').append(template(templateData));
     });
